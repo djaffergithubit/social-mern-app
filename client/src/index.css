@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  font-family: 'Rubik', sans-serif;
+}
+
+.flex-items-6{
+  flex: 6;
+}
+
+.custom-file-upload {
+  @apply flex items-center justify-start px-4 py-2 border-[1px] border-primary-500 border-dashed w-full h-20 text-16 rounded;
+  cursor: pointer;
+}
+
+.post-background {
+  background-image: url('./assets/icons/background(1).webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
