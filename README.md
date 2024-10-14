@@ -6,11 +6,6 @@
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Chat Functionality](#chat-functionality)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ## Introduction
 Welcome to the **Social MERN App**! This is a social networking application inspired by Instagram, built using the MERN stack (MongoDB, Express.js, React, and Node.js) with integrated chat functionality. Users can connect, share updates, and engage in real-time conversations.
@@ -66,8 +61,9 @@ Make sure you have the following installed:
 
 4. Set up environment variables:
     ```bash
-    MONGODB_URI=your_mongodb_uri
-    JWT_SECRET=your_jwt_secret
+    MONGO_URL=your_mongodb_uri
+    PORT= port
+    SECRET_TOKEN=your_jwt_secret
 
 5. start the backend server
     ```bash
