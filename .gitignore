@@ -1,0 +1,36 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+
+# Environment variables
+.env
+
+# Build directories
+build/
+dist/
+
+# Dependency directories
+package-lock.json
+yarn.lock
+
+# Test coverage
+coverage/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
