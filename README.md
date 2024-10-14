@@ -46,7 +46,7 @@ Make sure you have the following installed:
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/social-mern-app.git
+   git clone https://github.com/djaffergithubit/social-mern-app.git
    cd social-mern-app
 
 2. Install backend dependencies
