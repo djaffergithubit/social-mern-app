@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Messages from '../components/Messages'
 import MyChats from '../components/MyChats'
+import MyLoader from '../components/MyLoader'
 
 const Chat = ({ currentChat, setCurrentChat }) => {
+
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (currentChat !== '') {
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+      }, 1000)
+    }
+  }, [currentChat])
 
   return (
     <section className=' flex justify-center items-center min-h-screen'>
@@ -12,9 +24,16 @@ const Chat = ({ currentChat, setCurrentChat }) => {
           setCurrentChat={setCurrentChat}
          />
          <br />
-        <Messages 
+        {!loading ? <Messages 
           currentChat={currentChat}
-        />
+        />        
+          :
+        <div className='flex justify-center items-center max-w-4xl flex-8 w-full h-[450px]'>
+              <MyLoader 
+                  width={50}
+                  height={50}
+              />
+        </div>}
       </div>
     </section>
   )

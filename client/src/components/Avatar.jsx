@@ -59,7 +59,7 @@ const Avatar = ({
 
   return (
         <div 
-            className={` w-full flex items-center justify-between cursor-pointer ${isActiveChat ? 'bg-white bg-opacity-25 px-4 border-[1px] border-solid rounded-lg' : ''} ${hovered && forChat && 'bg-white bg-opacity-15 px-4 rounded-lg'} py-1.5 relative`}
+            className={` w-full flex items-center justify-between cursor-pointer ${isActiveChat && `px-4 border-[1px] border-solid rounded-lg ${mode === 'dark' ? 'bg-white bg-opacity-15': ' bg-sky-300'}` }  ${hovered && forChat && !isActiveChat && `px-4 rounded-lg ${mode === 'dark' ? 'bg-white bg-opacity-15' : ' bg-sky-200'}`} py-1.5 relative`}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
@@ -98,7 +98,7 @@ const Avatar = ({
             </div>
             {forChat && 
             <div 
-                className={`${hovered || optionHovered || optionFocused ? ' absolute right-0 mr-3' : 'hidden'} bg-opacity-40 rounded-full px-1 py-1 bg-white`} 
+                className={`${hovered || optionHovered || optionFocused ? ' absolute right-0 mr-3' : 'hidden'} ${mode === 'dark' ? 'bg-opacity-40 bg-white': ' bg-sky-400'} rounded-full px-1 py-1`} 
                 onMouseEnter={() => {setHovered(false); setOptionHovered(true)}}
                 onMouseLeave={() => {setHovered(true); setOptionHovered(false)}}
                 onClick={() => setOptionFocused(!optionFocused)}
@@ -118,6 +118,7 @@ const Avatar = ({
                 setHovered={setHovered}
                 setOpen={setOpen}
                 setOptionFocused={setOptionFocused}
+                currentChat={chatId}
             />}
             <DeleteConfirm 
                 open={open} 

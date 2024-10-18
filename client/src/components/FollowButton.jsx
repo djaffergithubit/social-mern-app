@@ -54,7 +54,10 @@ const FollowButton = ({ followedUser }) => {
         onClick={user._id !== followedUser._id ? followUser : editProfile }>
             {
               loading ?
-                <MyLoader />
+                <MyLoader 
+                    width={25}
+                    height={25}
+                />
              : user._id === followedUser._id ? 
                 'Update profile'
                 : 

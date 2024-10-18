@@ -48,6 +48,10 @@ export const useChats = (token) => {
         socket.on('chatDeleted', (message) => {
             getAllChats()
         })
+        socket.on('chat blocked', (message) => {
+            console.log('message chat blocked', message);
+            getAllChats()
+        })
 
         return () => {
             socket.off('newChat')
@@ -73,5 +77,24 @@ export const removeChat = async (chatId, token) => {
     .catch(err => {
         console.log(err)
         toast.error('Error removing chat', { className: 'text' })
+    })
+}
+
+export const blockDeblockChat = async (token, chat) => {
+    await axios.post('http://localhost:4000/chats/block-chat', { chat: chat }, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then((response) => {
+        socket.emit('chat blocked', { message: 'chat blocked' })
+        toast.success(
+            response.data.message,
+            { className: 'text-base' }
+        )
+    })
+    .catch((err) => {
+        console.log(err);
+        toast.error('Error blocking chat', { className: 'text-base' })
     })
 }

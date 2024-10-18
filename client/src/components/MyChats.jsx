@@ -3,7 +3,7 @@ import { FaSearch } from 'react-icons/fa'
 import Avatar from './Avatar'
 import { useChats } from '../api/chats'
 import { useSelector } from "react-redux"
-import { selectChatMessages, selectToken, selectUser, selectUserNotifications } from '../state/socialSlice'
+import { selectChatMessages, selectMode, selectToken, selectUser, selectUserNotifications } from '../state/socialSlice'
 import { getUsers } from '../api/users'
 import { socket } from '../socket'
 import AVatarSkelton from './AVatarSkelton'
@@ -11,6 +11,7 @@ import AVatarSkelton from './AVatarSkelton'
 const MyChats = ({ currentChat, setCurrentChat }) => {
 
   const token = useSelector(selectToken)
+  const mode = useSelector(selectMode)
   const user = useSelector(selectUser)
   const allUsers = getUsers()
   const users = allUsers?.filter(u => u._id !== user._id)
@@ -61,10 +62,10 @@ const MyChats = ({ currentChat, setCurrentChat }) => {
 
   return (
     <div className=' md:w-full flex-4 max-w-md flex flex-col mx-auto'>
-        <h5 className=' text-16 text-grey-200 font-medium text-start'>Your Conversations</h5>
+        <h5 className={` text-16 font-medium text-start ${mode === 'dark' ? 'text-grey-200': ' text-grey-900'}`}>Your Conversations</h5>
         <form action="" className=' flex items-center gap-1.5 w-full mb-2'>
             <input 
-                className='px-2 py-1 text-14 bg-grey-900 border-[1.5px] border-grey-700 rounded-lg w-full outline-none text-white' 
+                className={`px-2 py-1 text-14 ${mode === 'dark'? 'bg-grey-900  text-white' : ' bg-gray-100'} border-[1.5px] border-grey-700 rounded-lg w-full outline-none`} 
                 type="text" 
                 name="searchUser" 
                 id="" 

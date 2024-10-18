@@ -10,7 +10,8 @@ import
   setChatMessages, 
   selectChatMessages,
   addMessage,
-  setUserNotifications
+  setUserNotifications,
+  selectMode
 } from "../state/socialSlice"
 import { useSelector, useDispatch } from "react-redux"
 import { socket } from "../socket"
@@ -30,6 +31,7 @@ const Messages = ({ currentChat }) => {
     const [newMessage, setNewMessage] = useState('')
     const [chat, setChat] = useState({})
     const [participant, setParticipant] = useState({})
+    const mode = useSelector(selectMode)
     const token = useSelector(selectToken)
     const chats = useChats(token)
     const user = useSelector(selectUser)   
@@ -109,10 +111,10 @@ const Messages = ({ currentChat }) => {
 
   return ( 
   <>
-    {currentChat.length > 0 ? (<div className="flex flex-col max-w-4xl w-full bg-grey-800 h-full flex-8 rounded-md sticky top-0">
+  {currentChat.length > 0 ? (<div className={`flex flex-col max-w-4xl w-full h-full flex-8 rounded-md sticky top-0 ${mode === 'dark' ? 'bg-grey-800': 'bg-white'}`}>
       <div className=" flex items-center justify-start gap-1 py-3 mx-1.5 border-b-[1px] border-grey-700">
           <img className=" w-12 h-12 rounded-full" src={`${participant?.picture ? `http://localhost:4000/uploads/${participant?.picture}` : userPicture}`} alt="" loading="lazy" />
-          <h5 className=" text-16 text-white">{participant?.userName}</h5>
+          <h5 className={` text-16 ${mode === 'dark' ? 'text-white': 'text-gray-900 font-medium'} `}>{participant?.userName}</h5>
           <FaCircleCheck className=" text-blue-500 text-20" />
       </div>
     <div className="flex-grow overflow-y-auto h-[350px]" ref={scrollRef}>
@@ -130,7 +132,7 @@ const Messages = ({ currentChat }) => {
                     )
                       :
                     (
-                      <div className={`rounded-xl rounded-tr py-1 px-3 font-medium ${message.messageSender._id === user._id ? 'self-end  bg-green-900 text-grey-200': 'self-start bg-grey-200 text-grey-800'} ${message.messageSender._id === user._id && chatMessages[index-1]?.messageSender._id === user._id && 'mr-9'} ${message.messageSender._id !== user._id && chatMessages[index-1]?.messageSender._id === message.messageSender._id && 'ml-9' }`}>
+                      <div className={`rounded-xl rounded-tr py-1 px-3 font-medium ${message.messageSender._id === user._id ? `self-end ${mode === 'dark' ? 'bg-green-900 text-grey-200' : ' bg-blue-500 text-white'}` : `self-start ${mode === 'dark' ? ' bg-grey-200 text-grey-800' : ' bg-purple-500 text-white'}`} ${message.messageSender._id === user._id && chatMessages[index-1]?.messageSender._id === user._id && 'mr-9'} ${message.messageSender._id !== user._id && chatMessages[index-1]?.messageSender._id === message.messageSender._id && 'ml-9' }`}>
                         <p>{message.content}</p>
                       </div> 
                     )
@@ -144,23 +146,29 @@ const Messages = ({ currentChat }) => {
         <Banner />
       }
     </div>   
-    <form className="flex items-center p-4 gap-2" onSubmit={sendMessage}>
-      <div className="w-full relative">
-          <input 
-            type="text"
-            placeholder="Type your message..." 
-            name='newMessage' 
-            onChange={(e)=>setNewMessage(e.target.value)} 
-            value={newMessage} 
-            className="w-full rounded-lg px-4 py-1.5 border-[1px] border-grey-600 outline-none text-white text-16 bg-grey-800 focus:border-[1.5px] focus:border-blue-500 " 
-          />
-          <button className="absolute right-0 text-grey-200  text-24 bg-grey-800 h-full border-y-[1px] border-grey-600 mr-2" type="submit"><IoMdSend /></button>
+    {!chat?.blocked ?
+      <form className="flex items-center p-4 gap-2" onSubmit={sendMessage}>
+        <div className="w-full relative">
+            <input 
+              type="text"
+              placeholder="Type your message..." 
+              name='newMessage' 
+              onChange={(e)=>setNewMessage(e.target.value)} 
+              value={newMessage} 
+              className={`w-full rounded-lg px-4 py-1.5 border-[1px] outline-none text-16 focus:border-[1.5px] focus:border-blue-500  ${mode === 'dark' ? 'bg-grey-800 text-white border-grey-600': ' bg-white text-gray-900 border-blue-500'}`} 
+            />
+            <button className={`absolute right-0 text-grey-200  text-24 h-full border-y-[1px] mr-2 ${mode === 'dark' ? 'bg-grey-800 border-grey-600': ' bg-white border-blue-500'}`} type="submit"><IoMdSend /></button>
+        </div>
+        <div className=" relative">
+          <input className="hidden" type="file" name="picture" id="picture" onChange={(e)=>setPicture(e.target.files[0])} />
+          <label htmlFor="picture"><FaImage className={` text-32 cursor-pointer ${mode === 'dark' ? ' text-white': ' text-blue-600'}`} /></label>
+        </div>
+      </form>
+      :
+      <div className="flex items-center justify-center h-full py-2.5 bg-blue-600">
+        <h5 className=" text-16 text-white ">You can't reply to this conversation</h5>
       </div>
-      <div className=" relative">
-        <input className="hidden" type="file" name="picture" id="picture" onChange={(e)=>setPicture(e.target.files[0])} />
-        <label htmlFor="picture"><FaImage className=" text-32 text-white cursor-pointer" /></label>
-      </div>
-    </form>
+      }
     {picture && (
         <form className=" absolute top-0 h-full w-full flex flex-col justify-evenly items-center bg-gray-800 bg-opacity-65 p-4" onSubmit={SendImage} encType="multipart/form-data">
           <p className=" flex justify-end items-end w-full cursor-pointer" onClick={() => setPicture(null)}><AiTwotoneCloseCircle className=" text-3xl" /></p>
@@ -179,8 +187,9 @@ const Messages = ({ currentChat }) => {
         <BiMessageDetail className="text-white sm:text-9xl text-7xl leading-0" />
         <AiFillMessage className="text-white sm:text-5xl text-3xl self-end" />
       </div>
-      <h5 className="sm:text-20 text-16 text-grey-400">Select a conversation to Start messaging</h5>
-    </div>)}
+      <h5 className={`sm:text-20 text-16 ${mode === 'dark' ? 'text-grey-400 ': 'text-grey-900 '}`}>Select a conversation to Start messaging</h5>
+    </div>)
+}
   </>
 
   )

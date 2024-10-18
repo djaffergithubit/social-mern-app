@@ -1,11 +1,10 @@
 import { useEffect } from "react"
 import axios from "axios"
-import { selectChatMessages, selectMessages, selectToken, setMessages } from "../state/socialSlice"
+import { selectToken, setMessages } from "../state/socialSlice"
 import { useSelector, useDispatch } from "react-redux"
 
 export const getMessages = (currentChat) => {
 
-    const chatMessages = useSelector(selectChatMessages)
     const token = useSelector(selectToken)
     const dispatch = useDispatch()
 

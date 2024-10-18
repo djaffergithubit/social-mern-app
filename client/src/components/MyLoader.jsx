@@ -1,10 +1,10 @@
 import { Oval } from 'react-loader-spinner'
 
-const MyLoader = () => {
+const MyLoader = ({height, width}) => {
   return <Oval
   visible={true}
-  height="24"
-  width="24"
+  height={height}
+  width={width}
   color="#ffffff"
   ariaLabel="oval-loading"
   wrapperStyle={{}}
