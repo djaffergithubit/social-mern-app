@@ -23,6 +23,11 @@ const chatSchema = new mongoose.Schema({
 
     lastMessage: {
         type: String
+    },
+
+    blocked: {
+        type: Boolean,
+        default: false
     }
 })
 

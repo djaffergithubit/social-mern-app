@@ -73,4 +73,33 @@ const removeChatController = async (req, res) => {
     }
 }
 
-module.exports = { addNewChat, getChats, removeChatController }
+const blockChat = async(req, res) => {
+    try {
+        const { userId } = req.user
+        const { chat } = req.body
+        const chatFind = await Chat.findById(chat)
+
+        if (!chatFind) {
+            return res.status(404).json({ 'message': 'No chat found' })
+        }
+
+        else if (chatFind.participants.includes(userId)) {
+            chatFind.blocked = !chatFind.blocked
+            await chatFind.save()
+
+            return res.status(201).json({ 'message': 'chat blocked/deblocked successfully' })
+        }else{
+            return res.status(400).json({ 'message': 'user cannot block this chat' })
+        }
+
+    } catch (error) {
+        return res.status(500).json({ 'message': error.message })
+    }
+}
+
+module.exports = { 
+    addNewChat, 
+    getChats, 
+    removeChatController,
+    blockChat
+}

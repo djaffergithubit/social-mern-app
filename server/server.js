@@ -177,6 +177,10 @@ io.on('connection', (socket) => {
         io.emit('chatDeleted', message)
     })
 
+    socket.on('chat blocked', (message) => {
+        io.emit('chat blocked', message)
+    })
+
     socket.on('disconnect', () => {
         console.log('User disconnected');
     });
