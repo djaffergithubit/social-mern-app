@@ -18,6 +18,7 @@ Welcome to the **Social MERN App**! This is a social networking application insp
 - Real-time chat between users
 - Notifications for friend requests and messages
 - Responsive design for mobile and desktop
+- Switch between light and dark modes for a personalized theme
 
 ## Technologies Used
 - **Frontend:**
